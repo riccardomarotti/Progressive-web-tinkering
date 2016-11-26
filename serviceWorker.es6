@@ -1,4 +1,4 @@
-const CACHE_NAME = "gih-cache";
+export const CACHE_NAME = "gih-cache-v2";
 const CACHED_URLS = ["/", "/bundle.js", "/index.html", "/index-offline.html"];
 
 self.addEventListener("install", event => {
@@ -19,6 +19,20 @@ self.addEventListener("fetch", event => {
           return caches.match("/index-offline.html");
         }
       });
+    })
+  );
+});
+
+self.addEventListener("activate", event => {
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cacheName => {
+          if (CACHE_NAME !== cacheName && cacheName.startsWith("gih-cach")) {
+            return caches.delete(cacheName);
+          }
+        })
+      );
     })
   );
 });
