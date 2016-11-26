@@ -1,3 +1,24 @@
+const CACHE_NAME = "gih-cache";
+const CACHED_URLS = ["/", "/bundle.js", "/index.html", "/index-offline.html"];
+
+self.addEventListener("install", event => {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then(cache => {
+      return cache.addAll(CACHED_URLS);
+    })
+  );
+});
+
 self.addEventListener("fetch", event => {
-  console.log(`Fetch request for ${event.request.url}`);
+  event.respondWith(
+    fetch(event.request).catch(() => {
+      return caches.match(event.request, {ignoreSearch: true}).then(response => {
+        if(response) {
+          return response;
+        } else {
+          return caches.match("/index-offline.html");
+        }
+      });
+    })
+  );
 });
