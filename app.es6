@@ -18,7 +18,7 @@ function initialize() {
   let searchBox = $("#search-box");
   searchBox.focus();
   let searchBoxInputChange = Rx.Observable.fromEvent(searchBox, "input")
-    .debounce(500)
+    // .debounce(500)
     .filter(event => /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/.exec(event.target.value) !== null);
     
   searchBoxInputChange.subscribe((event) => {
