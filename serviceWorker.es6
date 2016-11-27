@@ -36,3 +36,25 @@ self.addEventListener("activate", event => {
     })
   );
 });
+
+self.addEventListener("push", function(event) {
+  console.log("[Service Worker] Push Received.");
+  console.log(`[Service Worker] Push had this data: "${event.data.text()}"`);
+
+  const title = "Progressive!";
+  const options = {
+    body: event.data.text()
+  };
+
+  event.waitUntil(self.registration.showNotification(title, options));
+});
+
+self.addEventListener("notificationclick", function(event) {
+  console.log("[Service Worker] Notification click Received.");
+
+  event.notification.close();
+
+  event.waitUntil(
+    clients.openWindow("https://mailcoding.com")
+  );
+});

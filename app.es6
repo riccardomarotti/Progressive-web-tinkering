@@ -1,7 +1,7 @@
 import { CACHE_NAME } from "./serviceWorker";
+import { urlB64ToUint8Array } from "./utils";
 require("rx");
 require("rx-dom");
-
 
 var registerServiceWorker = require("serviceworker!./serviceWorker.es6");
 
@@ -20,6 +20,23 @@ function initialize() {
   let searchBoxInputChange = Rx.Observable.fromEvent(searchBox, "input")
     // .debounce(500)
     .filter(event => /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/.exec(event.target.value) !== null);
+    
+  if ("showNotification" in ServiceWorkerRegistration.prototype) {
+    navigator.serviceWorker.ready
+    .then(registration => {
+      return registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlB64ToUint8Array("BNAzKEHIochdAz2jkJ9A0edl7cWIWN9pxokxrOZSykvH5K43uN44RaCJ3VKqepHyexsB2Ha2Vet3m4cMCc5Ph-U")
+      });
+    })
+    .then(subscription => {
+      // Do something with the subscription.
+    })
+    .catch(error => {
+      // Do something with the error.
+    });
+  }
+
     
   searchBoxInputChange.subscribe((event) => {
     const ip_url = `https://ipapi.co/${event.target.value}/json/`;
