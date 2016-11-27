@@ -64,3 +64,4 @@ function initialize() {
 Rx.DOM.ready().subscribe(initialize);
 
 require("file?name=[name].[ext]!./index.html");
+require("file?name=[name].[ext]!./index-offline.html");
