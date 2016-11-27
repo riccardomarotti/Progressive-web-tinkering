@@ -24,16 +24,17 @@ function initialize() {
   if ("showNotification" in ServiceWorkerRegistration.prototype) {
     navigator.serviceWorker.ready
     .then(registration => {
+      console.log("Registering notifications.");
       return registration.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: urlB64ToUint8Array("BNAzKEHIochdAz2jkJ9A0edl7cWIWN9pxokxrOZSykvH5K43uN44RaCJ3VKqepHyexsB2Ha2Vet3m4cMCc5Ph-U")
       });
     })
     .then(subscription => {
-      // Do something with the subscription.
+      console.log("Registered notifications.");
     })
     .catch(error => {
-      // Do something with the error.
+      consol.log("Error registering notifications.");
     });
   }
 
